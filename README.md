@@ -8,7 +8,7 @@ El objetivo principal es comprender el funcionamiento interno de las bases de da
 
 ### 📌 Conceptos y Anotaciones Implementadas
 
-* **Relaciones MuchosaUno / UnoaMuchos:** Uso de `@ManyToOne` y `@OneToMany`.
+* **Relaciones MuchosaUno / UnoaMuchos:** Uso de `@ManyToOne`, `@OneToMany`, `@ManyToMany`, etc.....
 * **Mapeo Bidireccional:** Configuración de relaciones bidireccionales con el atributo `mappedBy`.
 * **Gestión de Claves Foráneas:** Personalización con `@JoinColumn`.
 * **Cascada y Eliminación:** Control de operaciones en cadena con `cascade` y eliminación de huérfanos con `orphanRemoval = true`.
