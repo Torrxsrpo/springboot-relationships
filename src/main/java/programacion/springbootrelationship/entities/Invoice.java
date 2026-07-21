@@ -21,7 +21,7 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(Long total, String description) {
+    public Invoice(String description, Long total) {
         this.total = total;
         this.description = description;
     }
@@ -49,6 +49,14 @@ public class Invoice {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Client getClient() {
+        return client;
+    }
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
 
     @Override
     public String toString() {
