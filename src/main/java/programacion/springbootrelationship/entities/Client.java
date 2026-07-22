@@ -3,6 +3,9 @@ package programacion.springbootrelationship.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -12,15 +15,19 @@ public class Client {
     private Long id;
     private String name;
     @Column(name="last_name")
-    private String LastName;
+    private String lastName;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
 
 
     public Client() {
+        addresses = new ArrayList<>();
     }
 
     public Client(String name, String lastName) {
+        this();
         this.name = name;
-        this.LastName = lastName;
+        this.lastName = lastName;
     }
 
     public Long getId() {
@@ -40,11 +47,19 @@ public class Client {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        lastName = lastName;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
@@ -52,7 +67,9 @@ public class Client {
         return "Client{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", LastName='" + LastName + '\'' +
-                '}';
+                ", LastName='" + lastName + '\'' +
+                ", addresses=" + addresses + '\'' +
+                '}'
+                ;
     }
 }
