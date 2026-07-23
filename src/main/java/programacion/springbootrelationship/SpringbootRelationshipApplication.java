@@ -1,17 +1,19 @@
 package programacion.springbootrelationship;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
+
 import programacion.springbootrelationship.entities.Address;
 import programacion.springbootrelationship.entities.Client;
 import programacion.springbootrelationship.entities.Invoice;
 import programacion.springbootrelationship.repositories.ClientRepository;
 import programacion.springbootrelationship.repositories.InvoiceRepository;
-
-import java.util.Optional;
 
 @SpringBootApplication
 public class SpringbootRelationshipApplication implements CommandLineRunner {
@@ -26,7 +28,44 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        oneTomany();
+        RemoveAddress();
+
+    }
+
+
+        public void RemoveAddress(){
+        Client client = new Client("Carlos", "Antonio");
+        Address address1 = new Address("Street 1", 39, "California");
+        Address address2 = new Address("Vasco de gama", 3932, "Miami");
+        client.getAddresses().add(address1);
+        client.getAddresses().add(address2);
+        clientRepository.save(client);
+        System.out.println(client);
+
+        Optional<Client> optionalClient = clientRepository.findById(3L);
+        optionalClient.ifPresent(c -> {
+            c.getAddresses().remove(address1);
+            clientRepository.save(c);
+            System.out.println(c);
+        });
+
+    }
+
+    @Transactional
+    public void oneTomanyById(){
+        Optional<Client> optionalClient = clientRepository.findById(2L);
+        if(optionalClient.isPresent()){
+            Client client = optionalClient.get();
+            Address address1 = new Address("Street 1", 39, "California");
+            Address address2 = new Address("Vasco de gama", 3932, "Miami");
+            client.setAddresses(Arrays.asList(address1, address2));
+
+            clientRepository.save(client);
+            System.out.println(client);
+        }
+
+
+
 
     }
     @Transactional
@@ -38,7 +77,6 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
         client.getAddresses().add(address2);
         clientRepository.save(client);
         System.out.println(client);
-
 
     }
     @Transactional
