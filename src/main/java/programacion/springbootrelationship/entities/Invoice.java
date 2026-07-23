@@ -15,7 +15,7 @@ public class Invoice {
 
     //Many es porque es esta entidad: Muchas facturas a un cliente
     @ManyToOne
-//    @JoinColumn(name = "client_id") por default lo crea con este nombre
+   @JoinColumn(name = "client_id") //por default lo crea con este nombre
     private Client client;
 
 

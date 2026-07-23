@@ -1,6 +1,8 @@
 package programacion.springbootrelationship;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,28 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        RemoveAddressByfindById();
+        oneTomanyBidirectional();
 
     }
+
+
+        @Transactional
+    public void oneTomanyBidirectional(){
+        Client client = new Client("Carlos", "Antonio");
+
+        Invoice invoice1 = new Invoice("Compras de la oficina", 4500L);
+        Invoice invoice2 = new Invoice("Compras de la cocina", 5000L);
+
+        client.addInvoice(invoice1).addInvoice(invoice2);
+        clientRepository.save(client);
+        System.out.println(client);
+
+
+    }
+        
+        
+
+
 
        @Transactional
     public void RemoveAddressByfindById(){

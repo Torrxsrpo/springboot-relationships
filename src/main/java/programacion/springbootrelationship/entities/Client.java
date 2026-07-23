@@ -31,10 +31,13 @@ public class Client {
     @JoinTable(name = "tbl_client_address", joinColumns = @JoinColumn(name = "client_id"), inverseJoinColumns = @JoinColumn(name = "address_id"),
     uniqueConstraints = @UniqueConstraint(columnNames = {"address_id"}))
     private List<Address> addresses;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="client")
+    private List<Invoice> invoices;
 
 
     public Client() {
         addresses = new ArrayList<>();
+        invoices = new ArrayList<>();
     }
 
     public Client(String name, String lastName) {
@@ -75,6 +78,22 @@ public class Client {
         this.addresses = addresses;
     }
 
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
+    public Client addInvoice(Invoice invoice){
+        invoices.add(invoice);
+        invoice.setClient(this);  
+        return this;  
+    }
+
+
+
     @Override
     public String toString() {
         return "Client{" +
@@ -82,7 +101,10 @@ public class Client {
                 ", name='" + name + '\'' +
                 ", LastName='" + lastName + '\'' +
                 ", addresses=" + addresses + '\'' +
+                ", invoices=" + invoices + '\'' +
                 '}'
                 ;
     }
+
+
 }
