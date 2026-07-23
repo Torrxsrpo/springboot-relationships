@@ -28,12 +28,37 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        RemoveAddress();
+        RemoveAddressByfindById();
 
     }
 
+       @Transactional
+    public void RemoveAddressByfindById(){
+        Optional<Client> optionalClient = clientRepository.findById(2L);
+        if(optionalClient.isPresent()){
+            Client client = optionalClient.get();
+            Address address1 = new Address("Street 1", 39, "California");
+            Address address2 = new Address("Vasco de gama", 3932, "Miami");
+            client.setAddresses(Arrays.asList(address1, address2));
 
-        public void RemoveAddress(){
+            clientRepository.save(client);
+            System.out.println(client);
+
+            Optional<Client> optionalClient2 = clientRepository.findOne(2L);
+            optionalClient2.ifPresent(c -> {
+                c.getAddresses().remove(address2);
+                clientRepository.save(c);
+                System.out.println(c);
+            });
+        }
+    }
+
+
+   
+
+    
+    @Transactional
+    public void RemoveAddress(){
         Client client = new Client("Carlos", "Antonio");
         Address address1 = new Address("Street 1", 39, "California");
         Address address2 = new Address("Vasco de gama", 3932, "Miami");
