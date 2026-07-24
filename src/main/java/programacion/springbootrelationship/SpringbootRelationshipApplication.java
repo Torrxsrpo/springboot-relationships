@@ -2,8 +2,10 @@ package programacion.springbootrelationship;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,10 +32,30 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        oneTomanyBidirectional();
+        oneTomanyBidirectionalFindById();
 
     }
 
+
+            @Transactional
+    public void oneTomanyBidirectionalFindById(){
+        
+        Optional<Client> optionalClient = clientRepository.findOneWithAddressAndInvoices(1L);
+        optionalClient.ifPresent(client -> {
+            Invoice invoice1 = new Invoice("Compras de la oficina", 4500L);
+            Invoice invoice2 = new Invoice("Compras de la cocina", 5000L);
+        
+            Set<Address> addresses = new HashSet<>();
+            addresses.add(new Address("Street 1", 39, "California"));
+            addresses.add(new Address("Vasco de gama", 3932, "Miami"));
+            
+        client.addInvoice(invoice1).addInvoice(invoice2).setAddresses(addresses);
+        clientRepository.save(client);
+        System.out.println(client);
+
+        
+    });
+    }
 
         @Transactional
     public void oneTomanyBidirectional(){
@@ -60,7 +82,7 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
             Client client = optionalClient.get();
             Address address1 = new Address("Street 1", 39, "California");
             Address address2 = new Address("Vasco de gama", 3932, "Miami");
-            client.setAddresses(Arrays.asList(address1, address2));
+            client.setAddresses(new HashSet<>(Arrays.asList(address1, address2)));
 
             clientRepository.save(client);
             System.out.println(client);
@@ -104,7 +126,7 @@ public class SpringbootRelationshipApplication implements CommandLineRunner {
             Client client = optionalClient.get();
             Address address1 = new Address("Street 1", 39, "California");
             Address address2 = new Address("Vasco de gama", 3932, "Miami");
-            client.setAddresses(Arrays.asList(address1, address2));
+            client.setAddresses(new HashSet<>(Arrays.asList(address1, address2)));
 
             clientRepository.save(client);
             System.out.println(client);

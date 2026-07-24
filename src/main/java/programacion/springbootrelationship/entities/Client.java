@@ -2,7 +2,9 @@ package programacion.springbootrelationship.entities;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,13 +32,13 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //OrphanRemoval: Si se elimina un cliente, se eliminan sus direcciones asociadas o su direccion se elimina completamente de la base de datos, no solo de la lista de direcciones del cliente
     @JoinTable(name = "tbl_client_address", joinColumns = @JoinColumn(name = "client_id"), inverseJoinColumns = @JoinColumn(name = "address_id"),
     uniqueConstraints = @UniqueConstraint(columnNames = {"address_id"}))
-    private List<Address> addresses;
+    private Set<Address> addresses;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="client")
     private List<Invoice> invoices;
 
 
     public Client() {
-        addresses = new ArrayList<>();
+        addresses = new HashSet<>(); //revisar porque cambio todo a HashSet en vez de List 
         invoices = new ArrayList<>();
     }
 
@@ -67,14 +69,14 @@ public class Client {
     }
 
     public void setLastName(String lastName) {
-        lastName = lastName;
+        this.lastName = lastName;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 
